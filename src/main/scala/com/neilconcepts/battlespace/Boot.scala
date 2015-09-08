@@ -5,11 +5,10 @@ import com.twitter.util.Await
 import io.finch.route._
 import io.finch.request._
 
-
 /**
  * Boot ::
  * Just boilerplate at the moment, working on getting this api going
-*/
+ */
 object Boot extends App {
   val title: RequestReader[String] = paramOption("title").withDefault("")
 

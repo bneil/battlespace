@@ -30,14 +30,14 @@ scalacOptions ++= Seq(
 )
 
 javacOptions ++= Seq("-Xlint:unchecked", "-Xlint:deprecation", "-source", "1.7", "-target", "1.7")
-javaOptions in Universal ++= Seq(
-  "-J-server",
-  "-J-Xms3g -Xmx3g",
-  "-J-XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled",
-  "-J-XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=68",
-  "-J-XX:+ScavengeBeforeFullGC -XX:+CMSScavengeBeforeRemark",
-  "-J-XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=100M"
-)
+//javaOptions in Universal ++= Seq(
+//  "-J-server",
+//  "-J-Xms3g -Xmx3g",
+//  "-J-XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled",
+//  "-J-XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=68",
+//  "-J-XX:+ScavengeBeforeFullGC -XX:+CMSScavengeBeforeRemark",
+//  "-J-XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=100M"
+//)
 
 /* dependencies */
 libraryDependencies ++= Seq(
@@ -59,7 +59,7 @@ libraryDependencies ++= Seq(
 
 fork := true
 
-mainClass in Compile := Some("com.appthis.Server")
+mainClass in Compile := Some("com.neilconcepts.battlespace.Boot")
 
 scalariformSettings
 
