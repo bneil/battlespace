@@ -12,6 +12,8 @@ homepage := Some(url("https://neil-concepts.com"))
 
 startYear := Some(2015)
 
+seq(Revolver.settings: _*)
+
 /* scala versions and options */
 scalaVersion := "2.11.7"
 
@@ -55,6 +57,12 @@ libraryDependencies ++= Seq(
   , "com.github.finagle" %% "finch-circe" % "0.8.0"
   // -- Shapeless --
   , "com.chuusai" %% "shapeless" % "2.2.5"
+  // -- scalike --
+  , "org.scalikejdbc" %% "scalikejdbc"        % "2.2.7"
+  , "org.scalikejdbc" %% "scalikejdbc-test"   % "2.2.7"   % "test"
+  , "com.h2database"  %  "h2"                 % "1.4.187"
+  , "org.scalikejdbc" %% "scalikejdbc-config" % "2.2.7"
+  , "ch.qos.logback"  %  "logback-classic"    % "1.1.3"
 )
 
 fork := true

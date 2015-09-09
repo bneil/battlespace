@@ -17,6 +17,13 @@ object Boot extends App {
       s"Hello, $title $name!"
     }
 
+  val anotherRoute: Router[String] =
+    get("realz") {
+      s"test"
+    }
+
+  val allRoutes = api :+: anotherRoute
+
   println("Starting serving on port 8080")
-  Await.ready(Httpx.serve(":8080", api.toService))
+  Await.ready(Httpx.serve(":8080", allRoutes.toService))
 }

@@ -4,6 +4,8 @@ resolvers ++= Seq(
     "sonatype-releases" at "https://oss.sonatype.org/content/repositories/releases/"
   )
 
+libraryDependencies += "com.h2database" % "h2" % "1.4.187"
+
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.2.0")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.0.1")
@@ -19,3 +21,5 @@ addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.7.0")
 addSbtPlugin("com.sksamuel.scapegoat" %% "sbt-scapegoat" % "1.0.0")
 
 addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.0.0")
+
+addSbtPlugin("io.spray" % "sbt-revolver" % "0.7.1")
