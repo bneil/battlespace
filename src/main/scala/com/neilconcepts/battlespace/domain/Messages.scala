@@ -10,6 +10,6 @@ object Messages {
 
   type ErrorMsg = String
   sealed trait Error
-  sealed trait RegError extends Error
+  sealed trait RegError extends Error { val msg: ErrorMsg }
   case class RegFailed(msg: ErrorMsg) extends RegError
 }
