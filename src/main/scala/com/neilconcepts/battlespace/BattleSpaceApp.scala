@@ -19,6 +19,7 @@ class BattleSpaceApp {
 
   val server = Httpx.serve(":8080", service) //creates service
 
+  println("server starting on 8080")
   Await.ready(server)
 
   def close(): Future[Unit] = {

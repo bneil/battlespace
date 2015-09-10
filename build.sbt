@@ -67,7 +67,7 @@ libraryDependencies ++= Seq(
 
 fork := true
 
-mainClass in Compile := Some("com.neilconcepts.battlespace.Boot")
+mainClass in Compile := Some("com.neilconcepts.battlespace.BattleSpaceApp")
 
 scalariformSettings
 
