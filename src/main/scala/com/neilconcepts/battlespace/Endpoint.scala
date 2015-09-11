@@ -24,9 +24,10 @@ object Endpoint extends ErrorHandling {
   import RegistrationRoutes._
 
   def makeService(db: Database): Service[Request, Response] =
-    getRegUser(db) :+:
+    (
+      getRegUser(db) :+:
       createRegUser(db)
-      .toService
+    ).toService
 
 }
 
