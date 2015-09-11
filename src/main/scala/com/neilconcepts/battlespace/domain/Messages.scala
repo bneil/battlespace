@@ -7,6 +7,7 @@ object Messages {
   case object RegUpdated extends RegMessage
   case class RegCreated(player: Player) extends RegMessage
   case object RegRemoved extends RegMessage
+  case class RegFound(player: Player) extends RegMessage
 
   type ErrorMsg = String
   sealed trait Error

@@ -10,13 +10,15 @@ import scala.collection.mutable
 class InMemRegistration extends Registration {
   private[this] val _registration = mutable.Map.empty[PlayerID, Player]
 
-  override def createRegistration(id: PlayerID): RegResponse = Future(
+  override def createRegistration(id: PlayerID): Future[RegMessage] = Future(
     _registration.synchronized {
       _registration.get(id) match {
         case Some(player) =>
-          Left(RegCreated(player))
+          RegCreated(player)
         case None =>
-          Right(RegFailed("Not in memory"))
+          val player = Player(id)
+          _registration(id) = player
+          RegCreated(player)
       }
     }
   )

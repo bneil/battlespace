@@ -11,7 +11,7 @@ import com.twitter.util.Future
 trait Registration {
   type RegResponse = Future[Either[RegMessage, RegError]]
 
-  def createRegistration(id: PlayerID): RegResponse
+  def createRegistration(id: PlayerID): Future[RegMessage]
   def removeRegistration(id: PlayerID): RegResponse
   def updateRegistration(oldID: PlayerID, updatedPlayer: Player): RegResponse
   def readRegistration(id: PlayerID): Future[Option[Player]]

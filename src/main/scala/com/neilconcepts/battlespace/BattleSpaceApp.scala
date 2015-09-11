@@ -1,6 +1,6 @@
 package com.neilconcepts.battlespace
 
-import com.neilconcepts.battlespace.storage.Registration
+import com.neilconcepts.battlespace.storage.{ Database, Registration }
 import com.neilconcepts.battlespace.storage.mem.InMemRegistration
 import com.twitter.finagle.Httpx
 import com.twitter.util.{ Future, Await }
@@ -12,8 +12,10 @@ import io.finch.request._
  * The start to all the api methods
  */
 class BattleSpaceApp {
-  val db: Registration = new InMemRegistration()
-  db.createRegistration(id = java.util.UUID.randomUUID)
+  val db: Database = new Database()
+  db.registration.createRegistration(id = java.util.UUID.randomUUID)
+  db.registration.createRegistration(id = java.util.UUID.randomUUID)
+  db.registration.createRegistration(id = java.util.UUID.randomUUID)
 
   val service = Endpoint.makeService(db)
 

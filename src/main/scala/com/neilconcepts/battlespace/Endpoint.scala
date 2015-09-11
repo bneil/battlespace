@@ -1,15 +1,18 @@
 package com.neilconcepts.battlespace
 
 import java.util.UUID
-
 import com.neilconcepts.battlespace.domain.ErrorHandling
 import com.neilconcepts.battlespace.domain.bst.{ PlayerID, Player }
-import com.neilconcepts.battlespace.storage.Registration
+import com.neilconcepts.battlespace.storage.{ Database, Registration }
 import com.twitter.finagle.Service
 import com.twitter.finagle.httpx.{ Request, Response }
-import io.finch.response.{ BadRequest, Created }
 import io.finch.route.{ Router, string, _ }
 import io.circe.syntax._
+import io.finch._
+import io.finch.request._
+import io.finch.response._
+
+import scala.util.{ Failure, Success }
 
 /**
  * Endpoint ::
@@ -20,8 +23,10 @@ object Endpoint extends ErrorHandling {
 
   import RegistrationRoutes._
 
-  def makeService(db: Registration): Service[Request, Response] =
-    getRegUser.toService
+  def makeService(db: Database): Service[Request, Response] =
+    getRegUser(db) :+:
+      createRegUser(db)
+      .toService
 
 }
 
@@ -37,13 +42,26 @@ object Endpoint extends ErrorHandling {
  */
 object RegistrationRoutes {
 
-  def getRegUser: Router[Response] =
+  implicit def str2uuid: (String) => PlayerID = (x: String) => UUID.fromString(x)
+
+  def getRegUser(db: Database): Router[Response] =
     get("registration" / string) { id: String =>
-      //db.readRegistration(UUID.fromString(id))
-      val registeredPlayer: Player = Player(UUID.randomUUID())
-      println(registeredPlayer.toString)
-      Created(
-        Map("player" -> registeredPlayer.toString).asJson.noSpaces
-      )
+      for (regPlayer <- db.registration.readRegistration(id)) yield {
+        regPlayer match {
+          case Some(registeredPlayer) =>
+            Created(Map("player" -> registeredPlayer.toString).asJson.noSpaces)
+          case None =>
+            db.registration.createRegistration(id)
+            Created(Map("player" -> "1").asJson.noSpaces)
+        }
+      }
     }
+
+  def createRegUser(db: Database): Router[Response] =
+    get("registration" / "c") {
+      val newID = UUID.randomUUID()
+      db.registration.createRegistration(newID)
+      Created(Map("player" -> newID.toString).asJson.noSpaces)
+    }
+
 }
