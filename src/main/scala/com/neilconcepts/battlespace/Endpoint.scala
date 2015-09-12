@@ -64,5 +64,13 @@ object RegistrationRoutes {
       db.registration.createRegistration(newID)
       Created(Map("player" -> newID.toString).asJson.noSpaces)
     }
+}
 
+/**
+ * GameRoutes ::
+ * These routes will control all the external actions that happen within
+ * the game state. __fireTarget__
+ */
+object GameRoutes {
+  def fireTarget = ???
 }
