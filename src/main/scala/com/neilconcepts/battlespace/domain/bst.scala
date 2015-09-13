@@ -51,6 +51,8 @@ object board {
  * WormHole = Any projectile that enters
  */
 object GameObjects {
+  import GameActions._
+
   sealed abstract class GameObject{
     val birth : Option[GameAction]
     val life : Option[GameAction]
@@ -58,7 +60,7 @@ object GameObjects {
   }
 
   case object WormHole extends GameObject{
-    val birth = None // =  Takes(3)spaces
+    val birth = Takes(3)
     val life = None  // =  Takes(3)spaces
     val death = None //Explode(3)spaces
   }
@@ -84,6 +86,26 @@ object GameObjects {
 
 }
 
+/**
+ * GameActions ::
+ * All the game actions for game objects
+ * Each action has a three phase lifecycle
+ * - birth : The object when assigned to the game board
+ * - life : Any special actions while on the board
+ * - death : What happens when destroyed by a missle
+ */
 object GameActions {
-  sealed abstract class GameAction
+  sealed trait GameAction
+
+  object Takes extends GameAction {
+    def apply(size:Int): Unit ={
+      //Determine x,y,z interactions
+    }
+  }
+
+  object Explode extends GameAction {
+    def apply(size: Int): Unit = {
+      //Fire missles at x,y,z for a random range
+    }
+  }
 }
