@@ -13,10 +13,8 @@ object Board {
   type X = Int
   type Y = Int
   type Z = Int
-  type GameBoard = GameMatrix
+  type GameSpace = Option[GameObject]
 
   case class Point(x: X, y: Y, z: Z)
-  case class GameSpace(gameObj: Option[GameObject])
-  case class GameMatrix(x:GameSpace, y: GameSpace, z: GameSpace)
-  case class BattleSpaceBoard(gb: GameBoard)
+  case class BattleSpaceBoard(gb: Map[Point, GameSpace])
 }
