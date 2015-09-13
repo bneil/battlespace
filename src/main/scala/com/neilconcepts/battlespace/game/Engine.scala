@@ -1,6 +1,6 @@
 package com.neilconcepts.battlespace.game
 
-import com.neilconcepts.battlespace.domain.board.BattleSpaceBoard
+import com.neilconcepts.battlespace.domain.Board.{BattleSpaceBoard, GameMatrix}
 import com.neilconcepts.battlespace.domain.bst.Player
 
 /**
@@ -30,12 +30,25 @@ object Engine {
  *                   given 1 its a one handed battle
  */
 class Engine(player: Player, numPlayers: Int = 1) {
-  var gameBoard : BattleSpaceBoard = BattleSpaceBoard(
-    (10, 10, 10)
-  )
+  var gameBoard : Option[BattleSpaceBoard] = generateBoard()
+
+  def generateBoard(): Option[BattleSpaceBoard] ={
+    //for(
+    //  x <- 1 to 10;
+    //  y <- 1 to 10;
+    //  z <- 1 to 10;
+    //) yield (
+    //  throw new Exception("Work In Progress")
+    //)
+    None
+  }
+
+  def generateGameObjects(): Unit ={
+
+  }
 
 
   def apply(): Unit ={
-
+    generateGameObjects()
   }
 }
