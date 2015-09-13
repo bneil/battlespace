@@ -46,6 +46,13 @@ object GameObjects {
     val death = None
   }
 
+  case object Probe extends GameObject{
+    val size = (1,(1,1))
+    val birth = None
+    val life = Illuminate(5)
+    val death = None
+  }
+
   //space ships
   case object TheDude extends GameObject{
     val size = (1,(1,1))
