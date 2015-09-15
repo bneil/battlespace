@@ -1,6 +1,6 @@
 package com.neilconcepts.battlespace
 
-import com.neilconcepts.battlespace.storage.{ Database, Registration }
+import com.neilconcepts.battlespace.storage.{ Database, RegistrationStorage }
 import com.neilconcepts.battlespace.storage.mem.InMemRegistration
 import com.twitter.finagle.Httpx
 import com.twitter.util.{ Future, Await }

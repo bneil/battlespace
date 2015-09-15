@@ -2,6 +2,7 @@ package com.neilconcepts.battlespace.domain
 
 import java.util.UUID
 
+import com.neilconcepts.battlespace.domain.Board.BattleSpaceBoard
 import com.neilconcepts.battlespace.domain.GameObjects.GameObject
 
 /**
@@ -12,12 +13,17 @@ import com.neilconcepts.battlespace.domain.GameObjects.GameObject
  * I had to add an override to the toString.
  */
 object bst {
+  type GameID = UUID
   type PlayerID = UUID
   type Email = String
 
   case class Player(id: PlayerID) {
-    override def toString() = id.toString
+    override def toString = id.toString
   }
   case class Registration(email: Email)
+  case class GameState(
+    gameID: GameID,
+    gameBoard: BattleSpaceBoard
+  )
 }
 

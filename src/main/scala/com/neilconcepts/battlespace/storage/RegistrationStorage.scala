@@ -8,7 +8,7 @@ import com.twitter.util.Future
  * Registration ::
  * Your standard crud impl for the registration routes
  */
-trait Registration {
+trait RegistrationStorage {
   type RegResponse = Future[Either[RegMessage, RegError]]
 
   def createRegistration(id: PlayerID): Future[RegMessage]

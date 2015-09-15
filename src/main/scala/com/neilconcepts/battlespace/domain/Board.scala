@@ -15,6 +15,19 @@ object Board {
   type Z = Int
   type GameSpace = Option[GameObject]
 
+  val maxDimensions = 50
   case class Point(x: X, y: Y, z: Z)
   case class BattleSpaceBoard(gb: Map[Point, GameSpace])
+
+  def generateBoard(): BattleSpaceBoard = {
+    val gameSpace: Vector[(Point, GameSpace)] = (for (
+      x <- 1 to maxDimensions;
+      y <- 1 to maxDimensions;
+      z <- 1 to maxDimensions
+    ) yield (Point(x, y, z), None)).toVector
+
+    val board: Map[Point, GameSpace] = gameSpace.map(g => g._1 -> g._2).toMap
+    BattleSpaceBoard(gb = board)
+  }
+
 }

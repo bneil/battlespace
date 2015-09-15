@@ -2,12 +2,12 @@ package com.neilconcepts.battlespace.storage.mem
 
 import com.neilconcepts.battlespace.domain.Messages._
 import com.neilconcepts.battlespace.domain.bst.{ Player, PlayerID }
-import com.neilconcepts.battlespace.storage.Registration
+import com.neilconcepts.battlespace.storage.RegistrationStorage
 import com.twitter.util.Future
 
 import scala.collection.mutable
 
-class InMemRegistration extends Registration {
+class InMemRegistration extends RegistrationStorage {
   private[this] val _registration = mutable.Map.empty[PlayerID, Player]
 
   override def createRegistration(id: PlayerID): Future[RegMessage] = Future(

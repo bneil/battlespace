@@ -3,7 +3,7 @@ package com.neilconcepts.battlespace
 import java.util.UUID
 import com.neilconcepts.battlespace.domain.ErrorHandling
 import com.neilconcepts.battlespace.domain.bst.{ PlayerID, Player }
-import com.neilconcepts.battlespace.storage.{ Database, Registration }
+import com.neilconcepts.battlespace.storage.{ Database, RegistrationStorage }
 import com.twitter.finagle.Service
 import com.twitter.finagle.httpx.{ Request, Response }
 import io.finch.route.{ Router, string, _ }
@@ -34,7 +34,7 @@ object Endpoint extends ErrorHandling {
 /**
  * RegistrationRoutes ::
  * These are all responsible for registering new accounts or reporting back that
- * the accounts are no accessable. Registrations are apart of the [[Registration]]
+ * the accounts are no accessable. Registrations are apart of the [[RegistrationStorage]]
  * case class and are in the bs types domain.
  *
  * getRegUser -> this is currently a testing route and will be deprecated once I
