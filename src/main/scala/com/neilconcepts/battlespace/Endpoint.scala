@@ -1,6 +1,6 @@
 package com.neilconcepts.battlespace
 
-import java.util.UUID
+import java.util.{ Locale, UUID }
 
 import com.neilconcepts.battlespace.domain.Board.Point
 import com.neilconcepts.battlespace.domain.ErrorHandling
@@ -28,8 +28,8 @@ object Endpoint extends ErrorHandling {
   def makeService(db: Database): Service[Request, Response] =
     (
       getRegUser(db) :+:
-      createRegUser(db) :+:
-      attackBoard(db)
+        createRegUser(db) :+:
+        attackBoard(db) :+:
     ).toService
 
 }
@@ -77,8 +77,8 @@ object RegistrationRoutes {
  * attackBoard = {x:0, y:0, z:0} => Board
  */
 object GameRoutes {
-  def attackBoard(db: Database): Router[Point] =
-    post("g" / string ? body.as[Point]) { (boardIDstr: String, p: Point) =>
-      p
+  def attackBoard(db: Database): Router[Response] =
+    post("g" / string ? body.as[Point]) { (a: String, p: Point) =>
+      Ok(p)
     }
 }
