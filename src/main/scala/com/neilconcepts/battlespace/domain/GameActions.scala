@@ -40,9 +40,7 @@ object GameActions {
   }
 
   object RandomTransport extends GameAction {
-    def apply(): Option[GameAction] = {
-      //Random Transport
-      getRandomBoardSpot
+    def apply(size: Int): Option[GameAction] = {
       None
     }
   }

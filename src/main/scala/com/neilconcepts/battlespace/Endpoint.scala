@@ -1,18 +1,19 @@
 package com.neilconcepts.battlespace
 
 import java.util.UUID
+
+import com.neilconcepts.battlespace.domain.Board.Point
 import com.neilconcepts.battlespace.domain.ErrorHandling
-import com.neilconcepts.battlespace.domain.bst.{ PlayerID, Player }
+import com.neilconcepts.battlespace.domain.bst.PlayerID
 import com.neilconcepts.battlespace.storage.{ Database, RegistrationStorage }
 import com.twitter.finagle.Service
 import com.twitter.finagle.httpx.{ Request, Response }
-import io.finch.route.{ Router, string, _ }
 import io.circe.syntax._
-import io.finch._
 import io.finch.request._
 import io.finch.response._
-
-import scala.util.{ Failure, Success }
+import io.finch.route.{ Router, string, _ }
+import io.finch.circe._
+import io.circe.generic.auto._
 
 /**
  * Endpoint ::
@@ -21,12 +22,14 @@ import scala.util.{ Failure, Success }
  */
 object Endpoint extends ErrorHandling {
 
+  import GameRoutes._
   import RegistrationRoutes._
 
   def makeService(db: Database): Service[Request, Response] =
     (
       getRegUser(db) :+:
-      createRegUser(db)
+      createRegUser(db) :+:
+      attackBoard(db)
     ).toService
 
 }
@@ -70,7 +73,12 @@ object RegistrationRoutes {
  * GameRoutes ::
  * These routes will control all the external actions that happen within
  * the game state. __fireTarget__
+ *
+ * attackBoard = {x:0, y:0, z:0} => Board
  */
 object GameRoutes {
-  def fireTarget = ???
+  def attackBoard(db: Database): Router[Point] =
+    post("g" / string ? body.as[Point]) { (boardIDstr: String, p: Point) =>
+      p
+    }
 }

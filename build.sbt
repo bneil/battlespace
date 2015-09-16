@@ -41,6 +41,7 @@ javacOptions ++= Seq("-Xlint:unchecked", "-Xlint:deprecation", "-source", "1.7",
 //  "-J-XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=100M"
 //)
 
+
 /* dependencies */
 libraryDependencies ++= Seq(
   // -- config
@@ -55,6 +56,7 @@ libraryDependencies ++= Seq(
   // -- Finch --
   , "com.github.finagle" %% "finch-core" % "0.8.0"
   , "com.github.finagle" %% "finch-circe" % "0.8.0"
+  , "io.circe" %% "circe-generic" % "0.2.0-SNAPSHOT"
   // -- Shapeless --
   , "com.chuusai" %% "shapeless" % "2.2.5"
   // --scalaz
@@ -62,6 +64,11 @@ libraryDependencies ++= Seq(
 )
 
 fork := true
+
+resolvers ++= Seq(
+   Resolver.sonatypeRepo("snapshots"),
+  "TM" at "http://maven.twttr.com"
+)
 
 mainClass in Compile := Some("com.neilconcepts.battlespace.BattleSpaceApp")
 

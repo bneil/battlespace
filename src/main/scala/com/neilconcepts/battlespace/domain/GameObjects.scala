@@ -28,7 +28,7 @@ object GameObjects {
   case object WormHole extends GameObject {
     val size = 1
     val birth = Takes(3)
-    val life = Some(RandomTransport)
+    val life = RandomTransport(3)
     val death = None //Immortal
   }
 
