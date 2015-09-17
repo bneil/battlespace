@@ -1,18 +1,17 @@
 package com.neilconcepts.battlespace
 
-import java.util.{ Locale, UUID }
-
+import java.util.UUID
 import com.neilconcepts.battlespace.domain.Board.Point
-import com.neilconcepts.battlespace.domain.ErrorHandling
+import com.neilconcepts.battlespace.domain.{ uuid, ErrorHandling }
 import com.neilconcepts.battlespace.domain.bst.PlayerID
 import com.neilconcepts.battlespace.storage.{ Database, RegistrationStorage }
 import com.twitter.finagle.Service
 import com.twitter.finagle.httpx.{ Request, Response }
 import io.circe.syntax._
+import io.finch.circe._
 import io.finch.request._
 import io.finch.response._
 import io.finch.route.{ Router, string, _ }
-import io.finch.circe._
 import io.circe.generic.auto._
 
 /**
@@ -28,8 +27,8 @@ object Endpoint extends ErrorHandling {
   def makeService(db: Database): Service[Request, Response] =
     (
       getRegUser(db) :+:
-        createRegUser(db) :+:
-        attackBoard(db) :+:
+      createRegUser(db) :+:
+      attackBoard(db)
     ).toService
 
 }
@@ -78,7 +77,7 @@ object RegistrationRoutes {
  */
 object GameRoutes {
   def attackBoard(db: Database): Router[Response] =
-    post("g" / string ? body.as[Point]) { (a: String, p: Point) =>
-      Ok(p)
+    post("g" / uuid ? body.as[Point]) { (a: UUID, p: Point) =>
+      Ok("hi")
     }
 }
