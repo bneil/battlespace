@@ -7,13 +7,15 @@ import com.neilconcepts.battlespace.domain.bst.{ GameState, Player }
  * Messages that are used throughout the BattleSpace game
  */
 object Messages {
-  sealed trait RegMessage
+  sealed trait Message
+
+  sealed trait RegMessage extends Message
   case object RegUpdated extends RegMessage
   case class RegCreated(player: Player) extends RegMessage
   case object RegRemoved extends RegMessage
   case class RegFound(player: Player) extends RegMessage
 
-  sealed trait GameStateMessage
+  sealed trait GameStateMessage extends Message
   case class GameStateRetrieved(gameState: GameState) extends GameStateMessage
   case object GameStateSaved extends GameStateMessage
 

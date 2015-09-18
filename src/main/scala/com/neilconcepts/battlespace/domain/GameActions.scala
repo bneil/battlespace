@@ -1,6 +1,8 @@
 package com.neilconcepts.battlespace.domain
 
-import com.neilconcepts.battlespace.domain.Board.BattleSpaceBoard
+import com.neilconcepts.battlespace.domain.Board.{ Point, BattleSpaceBoard }
+import com.neilconcepts.battlespace.domain.Messages.GameStateError
+import com.neilconcepts.battlespace.domain.bst.GameState
 
 /**
  * GameActions ::
@@ -43,5 +45,12 @@ object GameActions {
     def apply(size: Int): Option[GameAction] = {
       None
     }
+  }
+
+  object Attack extends GameAction {
+    //def apply(point: Point): Either[GameState, GameStateError] = {
+    //  //this is temp
+    //  None
+    //}
   }
 }
