@@ -1,9 +1,11 @@
 package com.neilconcepts.battlespace
 
 import java.util.UUID
-import com.neilconcepts.battlespace.domain.Board.Point
+import com.neilconcepts.battlespace.domain.Board.{ BattleSpaceBoard, Point }
+import com.neilconcepts.battlespace.domain.Messages._
 import com.neilconcepts.battlespace.domain.{ uuid, ErrorHandling }
-import com.neilconcepts.battlespace.domain.bst.PlayerID
+import com.neilconcepts.battlespace.domain.bst.{ GameState, GameID, PlayerID }
+import com.neilconcepts.battlespace.game.BattleSpaceGame
 import com.neilconcepts.battlespace.storage.{ Database, RegistrationStorage }
 import com.twitter.finagle.Service
 import com.twitter.finagle.httpx.{ Request, Response }
@@ -77,7 +79,41 @@ object RegistrationRoutes {
  */
 object GameRoutes {
   def attackBoard(db: Database): Router[Response] =
-    post("g" / uuid ? body.as[Point]) { (a: UUID, p: Point) =>
-      Ok("hi")
+    post("g" / uuid ? body.as[Point]) { (gameID: UUID, p: Point) =>
+      for (
+        game <- db.gameState.retrieveGameState(gameID)
+      ) yield {
+        Ok("you done it")
+      }
     }
+
+  def extractGameStateResponse: Either[GameStateMessage, GameStateError] => Response = {
+    case Left(gameStateMessage) => handleGameStateRetrieved(gameStateMessage)
+    case Right(gameStateError)  => handleGameStateError(gameStateError)
+  }
+
+  def handleGameStateRetrieved: GameStateMessage => Response = {
+    case GameStateRetrieved(gameState) =>
+      val board = gameState.gameBoard.gb.mkString(",") // pretty up later
+      Ok(board.asJson.noSpaces)
+    case GameStateSaved =>
+      Ok("game saved")
+  }
+
+  def handleGameStateError: GameStateError => Response = {
+    case GameStateRetrievalFailed(err) =>
+      Ok(err.asJson.noSpaces)
+    case GameStateSaveFailed(err) =>
+      Ok(err.asJson.noSpaces)
+  }
+
+  def boardStatus(db: Database): Router[Response] =
+    get("g" / uuid / "status") { gameID: GameID =>
+      for (
+        gameState <- db.gameState.retrieveGameState(gameID)
+      ) yield {
+        extractGameStateResponse(gameState)
+      }
+    }
+
 }
