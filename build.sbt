@@ -55,10 +55,7 @@ libraryDependencies ++= Seq(
   , "joda-time" % "joda-time" % "2.7"
   // -- Finch --
   , "com.github.finagle" %% "finch-core" % "0.8.0"
-  , "com.github.finagle" %% "finch-circe" % "0.8.0"
-  , "io.circe" %% "circe-generic" % "0.2.0-SNAPSHOT"
-  // -- Shapeless --
-  , "com.chuusai" %% "shapeless" % "2.2.5"
+  , "com.github.finagle" %% "finch-argonaut" % "0.8.0"
   // --scalaz
   , "org.scalaz" %% "scalaz-core" % "7.1.3"
 )

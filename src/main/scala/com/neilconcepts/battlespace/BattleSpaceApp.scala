@@ -9,7 +9,9 @@ import io.finch.request._
 
 /**
  * BattleSpaceApp ::
- * The start to all the api methods
+ * The start to all the api methods, you'll notice the registration
+ * and I got that idea from the finch petstore app, to prepopulate
+ * the registration db.
  */
 class BattleSpaceApp {
   val db: Database = new Database()

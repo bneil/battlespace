@@ -1,14 +1,13 @@
 package com.neilconcepts.battlespace.domain
 
 import com.neilconcepts.battlespace.domain.Messages.RegError
-import com.twitter.finagle.{ Service, SimpleFilter }
 import com.twitter.finagle.httpx.{ Request, Response }
+import com.twitter.finagle.{ Service, SimpleFilter }
 import com.twitter.util.Future
-import io.circe.syntax._
 import io.finch.request._
 import io.finch.request.items._
 import io.finch.response._
-import io.finch.route._
+import io.finch.argonaut._
 
 /**
  * ErrorHandling ::
@@ -20,23 +19,23 @@ trait ErrorHandling {
    */
   def errorHandler: PartialFunction[Throwable, Response] = {
     case NotPresent(ParamItem(p)) => BadRequest(
-      Map("error" -> "param_not_present", "param" -> p).asJson.noSpaces
+      Map("error" -> "param_not_present", "param" -> p)
     )
     case NotPresent(BodyItem) => BadRequest(
-      Map("error" -> "body_not_present").asJson.noSpaces
+      Map("error" -> "body_not_present")
     )
     case NotParsed(ParamItem(p), _, _) => BadRequest(
-      Map("error" -> "param_not_parsed", "param" -> p).asJson.noSpaces
+      Map("error" -> "param_not_parsed", "param" -> p)
     )
     case NotParsed(BodyItem, _, _) => BadRequest(
-      Map("error" -> "body_not_parsed").asJson.noSpaces
+      Map("error" -> "body_not_parsed")
     )
     case NotValid(ParamItem(p), rule) => BadRequest(
-      Map("error" -> "param_not_valid", "param" -> p, "rule" -> rule).asJson.noSpaces
+      Map("error" -> "param_not_valid", "param" -> p, "rule" -> rule)
     )
     // Domain errors
     case error: RegError => NotFound(
-      Map("error" -> error.msg).asJson.noSpaces
+      Map("error" -> error.msg)
     )
   }
 

@@ -1,7 +1,7 @@
 package com.neilconcepts.battlespace.storage
 
 import com.neilconcepts.battlespace.domain.Messages.{ GameStateError, GameStateMessage }
-import com.neilconcepts.battlespace.domain.bst.{ GameID, GameState => GS }
+import com.neilconcepts.battlespace.domain.bst.{ GameId, GameState => GS }
 import com.twitter.util.Future
 
 /**
@@ -11,6 +11,6 @@ import com.twitter.util.Future
 trait GameStateStorage {
   type GameStateResponse = Future[Either[GameStateMessage, GameStateError]]
 
-  def retrieveGameState(gameID: GameID): GameStateResponse
+  def retrieveGameState(gameID: GameId): GameStateResponse
   def saveGameState(gameState: GS): GameStateResponse
 }

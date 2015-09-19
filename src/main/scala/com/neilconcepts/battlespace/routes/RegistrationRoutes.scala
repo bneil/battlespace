@@ -1,16 +1,12 @@
 package com.neilconcepts.battlespace.routes
 
 import java.util.UUID
-
-import com.neilconcepts.battlespace.domain.Messages.{ RegMessage, RegError }
 import com.neilconcepts.battlespace.domain.bst.{ Player, PlayerID }
 import com.neilconcepts.battlespace.storage.Database
 import com.twitter.finagle.httpx.Response
-import io.circe.syntax._
-import io.finch.circe._
 import io.finch.response._
 import io.finch.route.{ Router, string, _ }
-import io.circe.generic.auto._
+import io.finch.argonaut._
 
 /**
  * RegistrationRoutes ::
@@ -38,15 +34,15 @@ trait RegistrationRoutes extends RegistrationRouteActions {
     get("c") {
       val newID = UUID.randomUUID()
       db.registration.createRegistration(newID)
-      Created(Map("player" -> newID.toString).asJson.noSpaces)
+      Created(Map("player" -> newID.toString))
     }
 }
 
 trait RegistrationRouteActions {
   def extractRegPlayer: Option[Player] => Response = {
     case Some(registeredPlayer) =>
-      Created(Map("player" -> registeredPlayer.toString).asJson.noSpaces)
+      Created(Map("player" -> registeredPlayer.toString))
     case None =>
-      Created(Map("player" -> "registration not found").asJson.noSpaces)
+      Created(Map("player" -> "registration not found"))
   }
 }

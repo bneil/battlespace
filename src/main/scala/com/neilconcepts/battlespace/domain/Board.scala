@@ -1,5 +1,7 @@
 package com.neilconcepts.battlespace.domain
 
+import argonaut.Argonaut._
+import argonaut.CodecJson
 import com.neilconcepts.battlespace.domain.GameObjects.GameObject
 
 /**
@@ -30,4 +32,6 @@ object Board {
     BattleSpaceBoard(gb = board)
   }
 
+  implicit val pointCodec: CodecJson[Point] =
+    casecodec3(Point.apply, Point.unapply)("x", "y", "z")
 }
