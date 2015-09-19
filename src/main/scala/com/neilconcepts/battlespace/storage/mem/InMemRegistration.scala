@@ -1,16 +1,16 @@
 package com.neilconcepts.battlespace.storage.mem
 
 import com.neilconcepts.battlespace.domain.Messages._
-import com.neilconcepts.battlespace.domain.bst.{ Player, PlayerID }
+import com.neilconcepts.battlespace.domain.bst.{ Player, PlayerId }
 import com.neilconcepts.battlespace.storage.RegistrationStorage
 import com.twitter.util.Future
 
 import scala.collection.mutable
 
 class InMemRegistration extends RegistrationStorage {
-  private[this] val _registration = mutable.Map.empty[PlayerID, Player]
+  private[this] val _registration = mutable.Map.empty[PlayerId, Player]
 
-  override def createRegistration(id: PlayerID): Future[RegMessage] = Future(
+  override def createRegistration(id: PlayerId): Future[RegMessage] = Future(
     _registration.synchronized {
       _registration.get(id) match {
         case Some(player) =>
@@ -23,7 +23,7 @@ class InMemRegistration extends RegistrationStorage {
     }
   )
 
-  override def removeRegistration(id: PlayerID): RegResponse = Future(
+  override def removeRegistration(id: PlayerId): RegResponse = Future(
     _registration.synchronized {
       if (_registration.contains(id)) {
         _registration.remove(id)
@@ -34,11 +34,11 @@ class InMemRegistration extends RegistrationStorage {
     }
   )
 
-  override def readRegistration(id: PlayerID): Future[Option[Player]] = Future(
+  override def readRegistration(id: PlayerId): Future[Option[Player]] = Future(
     _registration.get(id)
   )
 
-  override def updateRegistration(oldID: PlayerID, updatedPlayer: Player): RegResponse = Future(
+  override def updateRegistration(oldID: PlayerId, updatedPlayer: Player): RegResponse = Future(
     _registration.synchronized {
       _registration.get(oldID) match {
         case Some(player) =>

@@ -1,7 +1,7 @@
 package com.neilconcepts.battlespace.routes
 
 import java.util.UUID
-import com.neilconcepts.battlespace.domain.bst.{ Player, PlayerID }
+import com.neilconcepts.battlespace.domain.bst.{ Player, PlayerId }
 import com.neilconcepts.battlespace.storage.Database
 import com.twitter.finagle.httpx.Response
 import io.finch.response._
@@ -21,7 +21,7 @@ import io.finch.argonaut._
  *
  */
 trait RegistrationRoutes extends RegistrationRouteActions {
-  implicit def str2uuid: (String) => PlayerID = (x: String) => UUID.fromString(x)
+  implicit def str2uuid: (String) => PlayerId = (x: String) => UUID.fromString(x)
 
   def getRegUser(db: Database): Router[Response] =
     get("c" / string) { id: String =>

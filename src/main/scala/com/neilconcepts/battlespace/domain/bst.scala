@@ -27,8 +27,8 @@ object bst {
     gameBoard: BattleSpaceBoard
   )
 
-  implicit val gameStateCodec: CodecJson[GameState] =
-    casecodec2(GameState.apply, GameState.unapply)("gameId", "gameBoard")
+  //  implicit val gameStateCodec: CodecJson[GameState] =
+  //    casecodec2(GameState.apply, GameState.unapply)("gameId", "gameBoard")
 
 }
 

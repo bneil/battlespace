@@ -22,8 +22,7 @@ object Endpoint
       getRegUser(db) :+:
       createRegUser(db) :+:
       attackBoard(db) :+:
-      boardStatus(db) :+:
-      test
+      boardStatus(db)
     ).toService
 
 }

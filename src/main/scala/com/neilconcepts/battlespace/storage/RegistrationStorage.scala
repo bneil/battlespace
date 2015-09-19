@@ -1,7 +1,7 @@
 package com.neilconcepts.battlespace.storage
 
 import com.neilconcepts.battlespace.domain.Messages.{ RegError, RegMessage }
-import com.neilconcepts.battlespace.domain.bst.{ Player, PlayerID }
+import com.neilconcepts.battlespace.domain.bst.{ Player, PlayerId }
 import com.twitter.util.Future
 
 /**
@@ -11,8 +11,8 @@ import com.twitter.util.Future
 trait RegistrationStorage {
   type RegResponse = Future[Either[RegMessage, RegError]]
 
-  def createRegistration(id: PlayerID): Future[RegMessage]
-  def removeRegistration(id: PlayerID): RegResponse
-  def updateRegistration(oldID: PlayerID, updatedPlayer: Player): RegResponse
-  def readRegistration(id: PlayerID): Future[Option[Player]]
+  def createRegistration(id: PlayerId): Future[RegMessage]
+  def removeRegistration(id: PlayerId): RegResponse
+  def updateRegistration(oldID: PlayerId, updatedPlayer: Player): RegResponse
+  def readRegistration(id: PlayerId): Future[Option[Player]]
 }
