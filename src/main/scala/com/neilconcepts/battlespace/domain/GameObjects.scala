@@ -52,4 +52,5 @@ object GameObjects {
     val life = Illuminate(5)
     val death = None
   }
+
 }
