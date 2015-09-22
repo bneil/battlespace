@@ -1,5 +1,8 @@
 package com.neilconcepts.battlespace.domain
 
+import argonaut.{ EncodeJson, CodecJson }
+import com.neilconcepts.battlespace.domain.GameObjects.GameObject
+
 /**
  * GameObjects ::
  * All the things that take up space. And well

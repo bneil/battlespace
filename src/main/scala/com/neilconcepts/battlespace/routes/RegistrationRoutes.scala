@@ -1,7 +1,9 @@
 package com.neilconcepts.battlespace.routes
 
 import java.util.UUID
-import com.neilconcepts.battlespace.domain.bst.{ Player, PlayerId }
+import com.neilconcepts.battlespace.domain.Board
+import com.neilconcepts.battlespace.domain.Messages.RegCreated
+import com.neilconcepts.battlespace.domain.bst.{ GameId, GameState, Player, PlayerId }
 import com.neilconcepts.battlespace.storage.Database
 import com.twitter.finagle.httpx.Response
 import io.finch.response._
@@ -32,9 +34,15 @@ trait RegistrationRoutes extends RegistrationRouteActions {
 
   def createRegUser(db: Database): Router[Response] =
     get("c") {
-      val newID = UUID.randomUUID()
-      db.registration.createRegistration(newID)
-      Created(Map("player" -> newID.toString))
+      val newId: PlayerId = UUID.randomUUID()
+      val newPlayer: Player = Player(newId)
+      val newGameId: GameId = UUID.randomUUID()
+      val newBoard = Board.generateBoard()
+      val newGameState: GameState = GameState(newGameId, newBoard)
+
+      db.registration.createRegistration(newId)
+      db.gameState.saveGameState(newGameState)
+      Created(RegCreated(newPlayer, newGameState))
     }
 }
 

@@ -23,12 +23,18 @@ object bst {
   }
   case class Registration(email: Email)
   case class GameState(
-    gameID: GameId,
+    gameId: GameId,
     gameBoard: BattleSpaceBoard
   )
 
   //  implicit val gameStateCodec: CodecJson[GameState] =
   //    casecodec2(GameState.apply, GameState.unapply)("gameId", "gameBoard")
 
+  implicit val playerCodec: CodecJson[Player] =
+    casecodec1(Player.apply, Player.unapply)("id")
+  //implicit val playerIdCode: CodecJson[PlayerId] =
+  //  casecodec1(PlayerId.apply, PlayerId.unapply)
+  implicit val gameStateCodec: CodecJson[GameState] =
+    casecodec2(GameState.apply, GameState.unapply)("gameId", "gameBoard")
 }
 
