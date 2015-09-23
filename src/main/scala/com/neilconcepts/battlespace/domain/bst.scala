@@ -1,9 +1,10 @@
 package com.neilconcepts.battlespace.domain
 
 import java.util.UUID
-
+import scalaz._
+import scalaz.Scalaz._
+import argonaut._
 import argonaut.Argonaut._
-import argonaut.CodecJson
 import com.neilconcepts.battlespace.domain.Board.BattleSpaceBoard
 
 /**
@@ -18,7 +19,7 @@ object bst {
   type PlayerId = UUID
   type Email = String
 
-  case class Player(id: PlayerId) {
+  case class Player(id: UUID) {
     override def toString = id.toString
   }
   case class Registration(email: Email)
@@ -27,14 +28,19 @@ object bst {
     gameBoard: BattleSpaceBoard
   )
 
-  //  implicit val gameStateCodec: CodecJson[GameState] =
-  //    casecodec2(GameState.apply, GameState.unapply)("gameId", "gameBoard")
-
   implicit val playerCodec: CodecJson[Player] =
     casecodec1(Player.apply, Player.unapply)("id")
-  //implicit val playerIdCode: CodecJson[PlayerId] =
-  //  casecodec1(PlayerId.apply, PlayerId.unapply)
+
   implicit val gameStateCodec: CodecJson[GameState] =
     casecodec2(GameState.apply, GameState.unapply)("gameId", "gameBoard")
+
+  implicit val uuidJsonDeCodec: DecodeJson[UUID] =
+    optionDecoder(_.string >>= {
+      str =>
+        \/.fromTryCatchThrowable[UUID, IllegalArgumentException](UUID.fromString(str)).toOption
+    }, "UUID")
+
+  implicit val uuidJsonEnCodec: EncodeJson[UUID] =
+    StringEncodeJson.contramap(_.toString)
 }
 

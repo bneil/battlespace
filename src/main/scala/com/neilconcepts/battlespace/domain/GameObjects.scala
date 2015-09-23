@@ -26,6 +26,7 @@ object GameObjects {
     val birth: Option[GameAction]
     val life: Option[GameAction]
     val death: Option[GameAction]
+    override def toString = "Generic Game Object"
   }
 
   case object WormHole extends GameObject {
@@ -33,6 +34,7 @@ object GameObjects {
     val birth = Takes(3)
     val life = RandomTransport(3)
     val death = None //Immortal
+    override def toString = "WormHole"
   }
 
   case object FuelPlanet extends GameObject {
@@ -40,6 +42,7 @@ object GameObjects {
     val birth = None
     val life = None
     val death = Explode(5)
+    override def toString = "FuelPlanet"
   }
 
   case object MegaSun extends GameObject {
@@ -47,6 +50,7 @@ object GameObjects {
     val birth = Illuminate(5)
     val life = None
     val death = None
+    override def toString = "MegaSun"
   }
 
   case object Probe extends GameObject {
@@ -54,6 +58,10 @@ object GameObjects {
     val birth = None
     val life = Illuminate(5)
     val death = None
+    override def toString = "Probe"
   }
+
+  trait Test
+  trait Ben extends Test
 
 }

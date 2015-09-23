@@ -14,11 +14,11 @@ class InMemRegistration extends RegistrationStorage {
     _registration.synchronized {
       _registration.get(id) match {
         case Some(player) =>
-          RegCreated(player)
+          RegFound(player)
         case None =>
           val player = Player(id)
           _registration(id) = player
-          RegCreated(player)
+          RegFound(player)
       }
     }
   )

@@ -15,31 +15,29 @@ object Board {
   type X = Int
   type Y = Int
   type Z = Int
+  type GameSpace = String
 
   val maxDimensions = 50
   case class Point(x: X, y: Y, z: Z)
-  case class BattleSpaceBoard(gb: Map[Point, GameSpace])
-  case class GameSpace(gs: Option[GameObject])
+  case class BattleSpace(p: Point, g: GameSpace)
+  case class BattleSpaceBoard(gb: Seq[BattleSpace])
 
   def generateBoard(): BattleSpaceBoard = {
-    val gameSpace: Vector[(Point, GameSpace)] = (for (
+    val gameSpaces: Seq[BattleSpace] = for (
       x <- 1 to maxDimensions;
       y <- 1 to maxDimensions;
       z <- 1 to maxDimensions
-    ) yield (Point(x, y, z), GameSpace(None))).toVector
+    ) yield BattleSpace(Point(x, y, z), "")
 
-    val board: Map[Point, GameSpace] = gameSpace.map(g => g._1 -> g._2).toMap
-    BattleSpaceBoard(gb = board)
+    BattleSpaceBoard(gameSpaces)
   }
 
   implicit val pointCodec: CodecJson[Point] =
     casecodec3(Point.apply, Point.unapply)("x", "y", "z")
 
-  implicit def battleSpaceBoardCodec: DecodeJson[BattleSpaceBoard] =
-    DecodeJson(c => for {
-      gb <- (c --\ "gb").as[Map[Point, GameSpace]]
-    } yield BattleSpaceBoard(gb))
+  implicit def battleSpaceBoardCodec: CodecJson[BattleSpaceBoard] =
+    casecodec1(BattleSpaceBoard.apply, BattleSpaceBoard.unapply)("gb")
 
-  implicit val gameSpaceCodec: CodecJson[GameSpace] =
-    casecodec1(GameSpace.apply, GameSpace.unapply)("gs")
+  implicit def battleSpaceCodec: CodecJson[BattleSpace] =
+    casecodec2(BattleSpace.apply, BattleSpace.unapply)("point", "gameObject")
 }
