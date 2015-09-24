@@ -5,7 +5,7 @@ import java.util.UUID
 import com.neilconcepts.battlespace.domain.Board.Point
 import com.neilconcepts.battlespace.domain.Messages._
 import com.neilconcepts.battlespace.domain.bst.GameId
-import com.neilconcepts.battlespace.domain.uuid
+import com.neilconcepts.battlespace.domain.{Board, uuid}
 import com.neilconcepts.battlespace.storage.Database
 import com.twitter.finagle.httpx.Response
 import io.finch.argonaut._
@@ -25,10 +25,9 @@ trait GameRoutes extends GameRouteActions {
   def attackBoard(db: Database): Router[Response] =
     post("g" / uuid ? body.as[Point]) { (gameID: UUID, p: Point) =>
       for (
-        game <- db.gameState.retrieveGameState(gameID)
+        gameStateMessage <- db.gameState.retrieveGameState(gameID)
       ) yield {
-        val a: Response = Ok("you done it")
-        a
+        handleAttackGameBoard(gameStateMessage)
       }
     }
 
@@ -45,9 +44,24 @@ trait GameRoutes extends GameRouteActions {
 }
 
 trait GameRouteActions {
+  def handleAttackGameBoard(p: Point, gm: Either[GameStateMessage, GameStateError]): Response = {
+    gm match {
+      case Left(gameStateMessage) => handleAttackGameBoardRetrieved(p, gameStateMessage)
+      case Right(gameStateError) => handleGameStateError(gameStateError)
+    }
+  }
+
   def extractGameStateResponse: Either[GameStateMessage, GameStateError] => Response = {
     case Left(gameStateMessage) => handleGameStateRetrieved(gameStateMessage)
-    case Right(gameStateError)  => handleGameStateError(gameStateError)
+    case Right(gameStateError) => handleGameStateError(gameStateError)
+  }
+
+  def handleAttackGameBoardRetrieved(p: Point, gs: GameStateMessage): Response = {
+    gs match {
+      case GameStateRetrieved(gameState) =>
+        val boardAfterAttack = Board.attackBoard(p, gameState.gameBoard)
+        Ok("done attacking")
+    }
   }
 
   def handleGameStateRetrieved: GameStateMessage => Response = {

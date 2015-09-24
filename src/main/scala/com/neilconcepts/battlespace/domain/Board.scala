@@ -32,6 +32,11 @@ object Board {
     BattleSpaceBoard(gameSpaces)
   }
 
+  def attackBoard(point: Point, gameBoard: BattleSpaceBoard): BattleSpaceBoard = {
+    //attack the board
+    gameBoard
+  }
+
   implicit val pointCodec: CodecJson[Point] =
     casecodec3(Point.apply, Point.unapply)("x", "y", "z")
 
