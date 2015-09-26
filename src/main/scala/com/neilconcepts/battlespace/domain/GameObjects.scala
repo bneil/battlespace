@@ -21,7 +21,15 @@ object GameObjects {
 
   type Size = Int
 
+  val objects = Seq(
+    WormHole,
+    FuelPlanet,
+    MegaSun,
+    Space
+  )
+
   abstract class GameObject {
+    val num: Int = 1
     val size: Size
     val birth: Option[GameAction]
     val life: Option[GameAction]
@@ -61,7 +69,11 @@ object GameObjects {
     override def toString = "Probe"
   }
 
-  trait Test
-  trait Ben extends Test
-
+  case object Space extends GameObject {
+    val size = 1
+    val birth = None
+    val life = None
+    val death = None
+    override def toString = "Space"
+  }
 }

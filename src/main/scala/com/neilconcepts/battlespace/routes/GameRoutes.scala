@@ -27,7 +27,7 @@ trait GameRoutes extends GameRouteActions {
       for (
         gameStateMessage <- db.gameState.retrieveGameState(gameID)
       ) yield {
-        handleAttackGameBoard(gameStateMessage)
+        handleAttackGameBoard(p, gameStateMessage)
       }
     }
 
@@ -36,8 +36,7 @@ trait GameRoutes extends GameRouteActions {
       for (
         gameState <- db.gameState.retrieveGameState(gameID)
       ) yield {
-        val resp: Response = extractGameStateResponse(gameState)
-        resp
+        extractGameStateResponse(gameState)
       }
     }
 
