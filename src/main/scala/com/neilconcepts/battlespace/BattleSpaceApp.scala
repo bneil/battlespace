@@ -15,6 +15,8 @@ import io.finch.request._
  */
 class BattleSpaceApp {
   val db: Database = new Database()
+
+  //filling up the db
   db.registration.createRegistration(id = java.util.UUID.randomUUID)
   db.registration.createRegistration(id = java.util.UUID.randomUUID)
   db.registration.createRegistration(id = java.util.UUID.randomUUID)
@@ -32,7 +34,7 @@ class BattleSpaceApp {
 }
 
 /**
- * Launches the PetstoreAPI service when the system is ready.
+ * Launches the BattleSpaceApp service when the system is ready.
  */
 object BattleSpaceApp extends BattleSpaceApp with App {
   Await.ready(server)
