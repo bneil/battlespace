@@ -5,7 +5,7 @@ import java.util.UUID
 import com.neilconcepts.battlespace.domain.Board.Point
 import com.neilconcepts.battlespace.domain.Messages._
 import com.neilconcepts.battlespace.domain.bst.GameId
-import com.neilconcepts.battlespace.domain.{Board, uuid}
+import com.neilconcepts.battlespace.domain.{ Board, uuid }
 import com.neilconcepts.battlespace.storage.Database
 import com.twitter.finagle.httpx.Response
 import io.finch.argonaut._
@@ -46,13 +46,13 @@ trait GameRouteActions {
   def handleAttackGameBoard(p: Point, gm: Either[GameStateMessage, GameStateError]): Response = {
     gm match {
       case Left(gameStateMessage) => handleAttackGameBoardRetrieved(p, gameStateMessage)
-      case Right(gameStateError) => handleGameStateError(gameStateError)
+      case Right(gameStateError)  => handleGameStateError(gameStateError)
     }
   }
 
   def extractGameStateResponse: Either[GameStateMessage, GameStateError] => Response = {
     case Left(gameStateMessage) => handleGameStateRetrieved(gameStateMessage)
-    case Right(gameStateError) => handleGameStateError(gameStateError)
+    case Right(gameStateError)  => handleGameStateError(gameStateError)
   }
 
   def handleAttackGameBoardRetrieved(p: Point, gs: GameStateMessage): Response = {
@@ -60,6 +60,8 @@ trait GameRouteActions {
       case GameStateRetrieved(gameState) =>
         val boardAfterAttack = Board.attackBoard(p, gameState.gameBoard)
         Ok("done attacking")
+      case _ =>
+        Ok("no game state to retrieve")
     }
   }
 

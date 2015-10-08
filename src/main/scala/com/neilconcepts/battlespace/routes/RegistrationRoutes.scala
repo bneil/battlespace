@@ -9,6 +9,7 @@ import com.twitter.finagle.httpx.Response
 import io.finch.response._
 import io.finch.route.{ Router, string, _ }
 import io.finch.argonaut._
+import argonaut._, Argonaut._
 
 /**
  * RegistrationRoutes ::
@@ -42,7 +43,7 @@ trait RegistrationRoutes extends RegistrationRouteActions {
 
       db.registration.createRegistration(newId)
       db.gameState.saveGameState(newGameState)
-      Created(RegCreated(newPlayer, newGameState))
+      Ok(RegCreated(newPlayer).asJson)
     }
 }
 

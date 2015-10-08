@@ -14,7 +14,7 @@ object Messages extends MessageCodecs {
 
   sealed trait RegMessage extends Message
   case object RegUpdated extends RegMessage
-  case class RegCreated(player: Player, gamestate: GameState) extends RegMessage
+  case class RegCreated(player: Player) extends RegMessage
   case object RegRemoved extends RegMessage
   case class RegFound(player: Player) extends RegMessage
 
@@ -34,6 +34,6 @@ object Messages extends MessageCodecs {
 
 trait MessageCodecs {
   implicit val regCreatedCodec: CodecJson[RegCreated] =
-    casecodec2(RegCreated.apply, RegCreated.unapply)("player", "gamestate")
+    casecodec1(RegCreated.apply, RegCreated.unapply)("player")
 
 }

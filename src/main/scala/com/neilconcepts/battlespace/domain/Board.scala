@@ -17,7 +17,7 @@ object Board {
   type Z = Int
   type GameSpace = String
 
-  val maxDimensions = 50
+  val maxDimensions = 10
   case class Point(x: X, y: Y, z: Z)
   case class BattleSpace(p: Point, g: GameSpace)
   case class BattleSpaceBoard(gb: Seq[BattleSpace])
@@ -32,8 +32,14 @@ object Board {
     BattleSpaceBoard(gameSpaces)
   }
 
+  //attack the board
   def attackBoard(point: Point, gameBoard: BattleSpaceBoard): BattleSpaceBoard = {
-    //attack the board
+    gameBoard.gb.find(_.p == point) match {
+      case Some(gameSpace) =>
+        println(s"hit gameSpace! contains: ${gameSpace.g}")
+      case None =>
+      //do nothing
+    }
     gameBoard
   }
 
