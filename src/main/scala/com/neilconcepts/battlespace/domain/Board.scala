@@ -1,9 +1,5 @@
 package com.neilconcepts.battlespace.domain
 
-import argonaut.Argonaut._
-import argonaut.{ DecodeJson, CodecJson }
-import com.neilconcepts.battlespace.domain.GameObjects.GameObject
-
 /**
  * board ::
  * The game board is made of a Matrix which
@@ -42,13 +38,4 @@ object Board {
     }
     gameBoard
   }
-
-  implicit val pointCodec: CodecJson[Point] =
-    casecodec3(Point.apply, Point.unapply)("x", "y", "z")
-
-  implicit def battleSpaceBoardCodec: CodecJson[BattleSpaceBoard] =
-    casecodec1(BattleSpaceBoard.apply, BattleSpaceBoard.unapply)("gb")
-
-  implicit def battleSpaceCodec: CodecJson[BattleSpace] =
-    casecodec2(BattleSpace.apply, BattleSpace.unapply)("point", "gameObject")
 }

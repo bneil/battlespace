@@ -4,10 +4,11 @@ import com.neilconcepts.battlespace.domain.Messages.RegError
 import com.twitter.finagle.httpx.{ Request, Response }
 import com.twitter.finagle.{ Service, SimpleFilter }
 import com.twitter.util.Future
+import io.circe.generic.auto._
+import io.finch.circe._
 import io.finch.request._
 import io.finch.request.items._
 import io.finch.response._
-import io.finch.argonaut._
 
 /**
  * ErrorHandling ::

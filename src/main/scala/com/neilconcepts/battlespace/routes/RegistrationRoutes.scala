@@ -1,15 +1,16 @@
 package com.neilconcepts.battlespace.routes
 
 import java.util.UUID
+
 import com.neilconcepts.battlespace.domain.Board
 import com.neilconcepts.battlespace.domain.Messages.RegCreated
 import com.neilconcepts.battlespace.domain.bst.{ GameId, GameState, Player, PlayerId }
 import com.neilconcepts.battlespace.storage.Database
 import com.twitter.finagle.httpx.Response
+import io.circe.generic.auto._
+import io.finch.circe._
 import io.finch.response._
 import io.finch.route.{ Router, string, _ }
-import io.finch.argonaut._
-import argonaut._, Argonaut._
 
 /**
  * RegistrationRoutes ::
@@ -43,7 +44,8 @@ trait RegistrationRoutes extends RegistrationRouteActions {
 
       db.registration.createRegistration(newId)
       db.gameState.saveGameState(newGameState)
-      Ok(RegCreated(newPlayer).asJson)
+
+      Ok(RegCreated(newPlayer.toString, newGameId.toString))
     }
 }
 

@@ -22,7 +22,8 @@ class InMemGameState extends GameStateStorage {
       case Some(gameBoard) =>
         Left(GameStateRetrieved(GameState(gameId, gameBoard)))
       case None =>
-        Right(GameStateRetrievalFailed("id not found"))
+        println(_gameState)
+        Right(GameStateRetrievalFailed("game id not found"))
     }
   )
 

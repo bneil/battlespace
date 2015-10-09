@@ -15,4 +15,5 @@ trait RegistrationStorage {
   def removeRegistration(id: PlayerId): RegResponse
   def updateRegistration(oldID: PlayerId, updatedPlayer: Player): RegResponse
   def readRegistration(id: PlayerId): Future[Option[Player]]
+  def retrieveRegistrations: Future[Seq[Player]]
 }

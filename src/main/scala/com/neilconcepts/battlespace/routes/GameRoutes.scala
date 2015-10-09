@@ -8,7 +8,8 @@ import com.neilconcepts.battlespace.domain.bst.GameId
 import com.neilconcepts.battlespace.domain.{ Board, uuid }
 import com.neilconcepts.battlespace.storage.Database
 import com.twitter.finagle.httpx.Response
-import io.finch.argonaut._
+import io.circe.generic.auto._
+import io.finch.circe._
 import io.finch.request._
 import io.finch.response._
 import io.finch.route.{ Router, _ }

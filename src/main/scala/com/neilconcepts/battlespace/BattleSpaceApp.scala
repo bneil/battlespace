@@ -1,5 +1,9 @@
 package com.neilconcepts.battlespace
 
+import java.util.UUID
+
+import com.neilconcepts.battlespace.domain.Board
+import com.neilconcepts.battlespace.domain.bst.{ GameId, GameState }
 import com.neilconcepts.battlespace.storage.{ Database, RegistrationStorage }
 import com.neilconcepts.battlespace.storage.mem.InMemRegistration
 import com.twitter.finagle.Httpx
@@ -15,11 +19,7 @@ import io.finch.request._
  */
 class BattleSpaceApp {
   val db: Database = new Database()
-
-  //filling up the db
-  db.registration.createRegistration(id = java.util.UUID.randomUUID)
-  db.registration.createRegistration(id = java.util.UUID.randomUUID)
-  db.registration.createRegistration(id = java.util.UUID.randomUUID)
+  SeedData.init(db)
 
   val service = Endpoint.makeService(db)
 
@@ -38,4 +38,33 @@ class BattleSpaceApp {
  */
 object BattleSpaceApp extends BattleSpaceApp with App {
   Await.ready(server)
+}
+
+object SeedData {
+  import scalaz._; import Scalaz._
+
+  def newState(): GameState = {
+    val newGameId: GameId = UUID.randomUUID()
+    val newBoard = Board.generateBoard()
+    val newGameState: GameState = GameState(newGameId, newBoard)
+    newGameState
+  }
+  def newPlayer = java.util.UUID.randomUUID
+
+  def newPlayerAndState = {
+    val state = newState()
+    val player = newPlayer
+    val gameId = state.gameId
+    println(s"gameId: $gameId player: $player")
+    (player, state)
+  }
+
+  def init(db: Database) {
+    //filling up the db
+    for (i <- 1 |-> 5) {
+      val np = newPlayerAndState
+      db.registration.createRegistration(np._1)
+      db.gameState.saveGameState(np._2)
+    }
+  }
 }

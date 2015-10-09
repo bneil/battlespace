@@ -1,20 +1,17 @@
 package com.neilconcepts.battlespace.domain
 
-import argonaut.Argonaut._
-import argonaut.CodecJson
-import com.neilconcepts.battlespace.domain.Messages.RegCreated
-import com.neilconcepts.battlespace.domain.bst.{ GameState, Player }
+import com.neilconcepts.battlespace.domain.bst.{ GameId, GameState, Player }
 
 /**
  * Messages ::
  * Messages that are used throughout the BattleSpace game
  */
-object Messages extends MessageCodecs {
+object Messages {
   sealed trait Message
 
   sealed trait RegMessage extends Message
   case object RegUpdated extends RegMessage
-  case class RegCreated(player: Player) extends RegMessage
+  case class RegCreated(player: String, gameId: String) extends RegMessage
   case object RegRemoved extends RegMessage
   case class RegFound(player: Player) extends RegMessage
 
@@ -32,8 +29,3 @@ object Messages extends MessageCodecs {
   case class GameStateRetrievalFailed(msg: ErrorMsg) extends GameStateError
 }
 
-trait MessageCodecs {
-  implicit val regCreatedCodec: CodecJson[RegCreated] =
-    casecodec1(RegCreated.apply, RegCreated.unapply)("player")
-
-}

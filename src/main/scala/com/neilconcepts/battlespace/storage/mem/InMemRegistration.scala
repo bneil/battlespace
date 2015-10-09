@@ -51,4 +51,8 @@ class InMemRegistration extends RegistrationStorage {
       }
     }
   )
+
+  override def retrieveRegistrations: Future[Seq[Player]] = Future {
+    _registration.map(_._2).toSeq
+  }
 }

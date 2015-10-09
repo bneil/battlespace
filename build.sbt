@@ -45,19 +45,22 @@ javacOptions ++= Seq("-Xlint:unchecked", "-Xlint:deprecation", "-source", "1.7",
 /* dependencies */
 libraryDependencies ++= Seq(
   // -- config
-  "com.typesafe" % "config" % "1.3.0"
+  "com.typesafe" % "config" % "1.3.0",
   // -- testing --
-  , "org.scalatest" %% "scalatest" % "2.2.4" % "test"
+  "org.scalatest" %% "scalatest" % "2.2.4" % "test",
   // -- Logging --
-  , "ch.qos.logback" % "logback-classic" % "1.1.3"
-  , "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0"
+  "ch.qos.logback" % "logback-classic" % "1.1.3",
+  "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
   // -- Joda --
-  , "joda-time" % "joda-time" % "2.7"
+  "joda-time" % "joda-time" % "2.7",
   // -- Finch --
-  , "com.github.finagle" %% "finch-core" % "0.8.0"
-  , "com.github.finagle" %% "finch-argonaut" % "0.8.0"
+  "com.github.finagle" %% "finch-core" % "0.8.0",
+  "com.github.finagle" %% "finch-circe" % "0.8.0",
+  "io.circe" %% "circe-core" % "0.1.1",
+  "io.circe" %% "circe-generic" % "0.1.1",
+  "io.circe" %% "circe-jawn" % "0.1.1",
   // --scalaz
-  , "org.scalaz" %% "scalaz-core" % "7.1.3"
+  "org.scalaz" %% "scalaz-core" % "7.1.3"
 )
 
 fork := true
