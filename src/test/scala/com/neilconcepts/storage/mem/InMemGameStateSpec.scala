@@ -26,6 +26,7 @@ class InMemGameStateSpec extends WordSpec with Matchers {
         rez shouldBe a[RegFound]
       }
     }
+
     "updating" should {
       "update an entry" in {
         val reg = _db.updateRegistration(playerId, player)
@@ -34,6 +35,7 @@ class InMemGameStateSpec extends WordSpec with Matchers {
         rez should be(Right(RegUpdated))
       }
     }
+
     "read" should {
       "be able to read an entry" in {
         val reg = _db.readRegistration(playerId)
@@ -41,6 +43,7 @@ class InMemGameStateSpec extends WordSpec with Matchers {
         rez shouldBe a[Player]
       }
     }
+
     "retrieve" should {
       "be able to return all players" in {
         val reg = _db.retrieveRegistrations
@@ -48,6 +51,7 @@ class InMemGameStateSpec extends WordSpec with Matchers {
         rez shouldBe a[Seq[_]]
       }
     }
+
     "remove" should {
       "be able to remove an entry" in {
         val reg = _db.removeRegistration(playerId)
@@ -57,8 +61,4 @@ class InMemGameStateSpec extends WordSpec with Matchers {
       }
     }
   }
-  //def removeRegistration(id: PlayerId): RegResponse
-  //def updateRegistration(oldID: PlayerId, updatedPlayer: Player): RegResponse
-  //def readRegistration(id: PlayerId): Future[Option[Player]]
-  //def retrieveRegistrations: Future[Seq[Player]]
 }

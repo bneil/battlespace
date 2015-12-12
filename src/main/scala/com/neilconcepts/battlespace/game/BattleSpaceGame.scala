@@ -30,7 +30,7 @@ object BattleSpaceGame {
  * @param numPlayers defines the num of players,
  *                   given 1 its a one handed battle
  */
-class BattleSpaceGame(player: Player, numPlayers: Int = 1) {
+class BattleSpaceGame(val player: Player, numPlayers: Int = 1) {
   var gameBoard: BattleSpaceBoard = Board.generateBoard()
 
   def generateGameObjects(): Unit = {
