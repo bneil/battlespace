@@ -20,9 +20,10 @@ class InMemGameState extends GameStateStorage {
   override def retrieveGameState(gameId: GameId): GameStateResponse = Future(
     _gameState.get(gameId) match {
       case Some(gameBoard) =>
+        println("found game state")
         Left(GameStateRetrieved(GameState(gameId, gameBoard)))
       case None =>
-        println(_gameState)
+        println("unable to retrieve game state")
         Right(GameStateRetrievalFailed("game id not found"))
     }
   )
@@ -33,8 +34,10 @@ class InMemGameState extends GameStateStorage {
         _gameState(gameState.gameId) = gameState.gameBoard
       } match {
         case Success(_) =>
+          println("saved game state")
           Left(GameStateSaved)
         case Failure(ex) =>
+          println("error saving game state")
           Right(GameStateRetrievalFailed("couldnt save game state"))
       }
     }

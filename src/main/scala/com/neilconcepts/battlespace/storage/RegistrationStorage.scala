@@ -9,7 +9,7 @@ import com.twitter.util.Future
  * Your standard crud impl for the registration routes
  */
 trait RegistrationStorage {
-  type RegResponse = Future[Either[RegMessage, RegError]]
+  type RegResponse = Future[Either[RegError, RegMessage]]
 
   def createRegistration(id: PlayerId): Future[RegMessage]
   def removeRegistration(id: PlayerId): RegResponse

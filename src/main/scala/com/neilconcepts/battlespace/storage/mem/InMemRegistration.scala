@@ -4,10 +4,10 @@ import com.neilconcepts.battlespace.domain.Messages._
 import com.neilconcepts.battlespace.domain.bst.{ Player, PlayerId }
 import com.neilconcepts.battlespace.storage.RegistrationStorage
 import com.twitter.util.Future
-
 import scala.collection.mutable
 
 class InMemRegistration extends RegistrationStorage {
+
   private[this] val _registration = mutable.Map.empty[PlayerId, Player]
 
   override def createRegistration(id: PlayerId): Future[RegMessage] = Future(
@@ -27,9 +27,9 @@ class InMemRegistration extends RegistrationStorage {
     _registration.synchronized {
       if (_registration.contains(id)) {
         _registration.remove(id)
-        Left(RegRemoved)
+        Right(RegRemoved)
       } else {
-        Right(RegFailed("Not able to remove in memory"))
+        Left(RegFailed("Not able to remove in memory"))
       }
     }
   )
@@ -44,15 +44,15 @@ class InMemRegistration extends RegistrationStorage {
         case Some(player) =>
           _registration.remove(oldID)
           _registration(updatedPlayer.id) = updatedPlayer
-          Left(RegUpdated)
+          Right(RegUpdated)
 
         case None =>
-          Right(RegFailed("Not able to update in mem"))
+          Left(RegFailed("Not able to update in mem"))
       }
     }
   )
 
   override def retrieveRegistrations: Future[Seq[Player]] = Future {
-    _registration.map(_._2).toSeq
+    _registration.values.toSeq
   }
 }

@@ -18,6 +18,10 @@ object Board {
   case class BattleSpace(p: Point, g: GameSpace)
   case class BattleSpaceBoard(gb: Seq[BattleSpace])
 
+  def generateRandomEncounter() = {
+
+  }
+
   def generateBoard(): BattleSpaceBoard = {
     val gameSpaces: Seq[BattleSpace] = for (
       x <- 1 to maxDimensions;
