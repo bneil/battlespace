@@ -11,7 +11,7 @@ import com.neilconcepts.battlespace.domain.GameObjects.GameObject
  * Destroyer (or Cruiser)	3
  * Patrol boat (or destroyer)	2
  */
-private trait Ships {
+trait Ships {
   import GameActions._
   import GameObjects._
 
@@ -20,7 +20,8 @@ private trait Ships {
     SpaceTruck,
     SpaceWinnebago,
     SpaceGecko,
-    SpaceBus
+    SpaceBus,
+    Thargoid
   )
 
   case object Scout extends GameObject {

@@ -12,10 +12,6 @@ package com.neilconcepts.battlespace.domain
 object GameObjects {
   import GameActions._
 
-  sealed trait Horizontal
-  sealed trait Vertical
-  type Direction = (Horizontal, Vertical)
-
   type Size = Int
 
   val objects = Seq(

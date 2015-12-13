@@ -1,5 +1,7 @@
 package com.neilconcepts.battlespace.domain
 
+import scala.util.Random
+
 /**
  * board ::
  * The game board is made of a Matrix which
@@ -7,19 +9,44 @@ package com.neilconcepts.battlespace.domain
  * more is known about space so it should be
  * left at that.
  */
-object Board {
+object Board extends Ships {
   type X = Int
   type Y = Int
   type Z = Int
   type GameSpace = String
+  type Points = (X, Y, Z)
+
+  sealed trait Direction
+  case object Horizontal extends Direction
+  case object Vertical extends Direction
+  case object Diag extends Direction
+  val directions = Seq(Horizontal, Vertical, Diag)
 
   val maxDimensions = 10
   case class Point(x: X, y: Y, z: Z)
   case class BattleSpace(p: Point, g: GameSpace)
   case class BattleSpaceBoard(gb: Seq[BattleSpace])
 
-  def generateRandomEncounter() = {
+  def getRandDirection: Direction =
+    Random.shuffle(directions).head
 
+  def generateRandomEncounter() = ???
+
+  def addShips(gameBoard: BattleSpaceBoard): BattleSpaceBoard = {
+      def positionByDirection: Direction => Points = {
+        case Horizontal => ???
+        case Vertical   => ???
+        case Diag       => ???
+      }
+    for (
+      ship <- spaceShips;
+      num <- ship.size;
+      direction <- getRandDirection
+    ) yield {
+      positionByDirection(direction)
+    }
+
+    gameBoard
   }
 
   def generateBoard(): BattleSpaceBoard = {

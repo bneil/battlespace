@@ -54,11 +54,11 @@ libraryDependencies ++= Seq(
   // -- Joda --
   "joda-time" % "joda-time" % "2.7",
   // -- Finch --
-  "com.github.finagle" %% "finch-core" % "0.8.0",
-  "com.github.finagle" %% "finch-circe" % "0.8.0",
-  "io.circe" %% "circe-core" % "0.1.1",
-  "io.circe" %% "circe-generic" % "0.1.1",
-  "io.circe" %% "circe-jawn" % "0.1.1",
+  "com.github.finagle" %% "finch-core" % "0.9.2",
+  "com.github.finagle" %% "finch-circe" % "0.9.2",
+  "io.circe" %% "circe-core" % "0.2.1",
+  "io.circe" %% "circe-generic" % "0.2.1",
+  "io.circe" %% "circe-jawn" % "0.2.1",
   // --scalaz
   "org.scalaz" %% "scalaz-core" % "7.1.3"
 )
@@ -67,7 +67,9 @@ fork := true
 
 resolvers ++= Seq(
    Resolver.sonatypeRepo("snapshots"),
-  "TM" at "http://maven.twttr.com"
+  "TM" at "http://maven.twttr.com",
+  "Secured Central Repository" at "https://repo1.maven.org/maven2"
+
 )
 
 mainClass in Compile := Some("com.neilconcepts.battlespace.BattleSpaceApp")

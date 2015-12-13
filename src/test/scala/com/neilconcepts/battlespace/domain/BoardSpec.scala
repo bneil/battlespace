@@ -13,6 +13,7 @@ class BoardSpec extends WordSpec with Matchers {
         gb = Some(Board.generateBoard())
         gb.get should not be null
       }
+
       "generate the game pieces properly" in {
 
       }
