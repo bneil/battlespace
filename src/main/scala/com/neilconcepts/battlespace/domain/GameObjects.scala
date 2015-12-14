@@ -12,8 +12,6 @@ package com.neilconcepts.battlespace.domain
 object GameObjects {
   import GameActions._
 
-  type Size = Int
-
   val objects = Seq(
     WormHole,
     FuelPlanet,
@@ -23,7 +21,7 @@ object GameObjects {
 
   abstract class GameObject {
     val num: Int = 1
-    val size: Size
+    val siz: Int
     val birth: Option[GameAction]
     val life: Option[GameAction]
     val death: Option[GameAction]
@@ -31,7 +29,7 @@ object GameObjects {
   }
 
   case object WormHole extends GameObject {
-    val size = 1
+    val siz = 1
     val birth = Takes(3)
     val life = RandomTransport(3)
     val death = None //Immortal
@@ -39,7 +37,7 @@ object GameObjects {
   }
 
   case object FuelPlanet extends GameObject {
-    val size = 1
+    val siz = 1
     val birth = None
     val life = None
     val death = Explode(5)
@@ -47,7 +45,7 @@ object GameObjects {
   }
 
   case object MegaSun extends GameObject {
-    val size = 1
+    val siz = 1
     val birth = Illuminate(5)
     val life = None
     val death = None
@@ -55,7 +53,7 @@ object GameObjects {
   }
 
   case object Probe extends GameObject {
-    val size = 1
+    val siz = 1
     val birth = None
     val life = Illuminate(5)
     val death = None
@@ -63,7 +61,7 @@ object GameObjects {
   }
 
   case object Space extends GameObject {
-    val size = 1
+    val siz = 1
     val birth = None
     val life = None
     val death = None

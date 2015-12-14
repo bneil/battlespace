@@ -21,10 +21,10 @@ class InMemGameState extends GameStateStorage {
     _gameState.get(gameId) match {
       case Some(gameBoard) =>
         println("found game state")
-        Left(GameStateRetrieved(GameState(gameId, gameBoard)))
+        Right(GameStateRetrieved(GameState(gameId, gameBoard)))
       case None =>
         println("unable to retrieve game state")
-        Right(GameStateRetrievalFailed("game id not found"))
+        Left(GameStateRetrievalFailed("game id not found"))
     }
   )
 
@@ -35,10 +35,10 @@ class InMemGameState extends GameStateStorage {
       } match {
         case Success(_) =>
           println("saved game state")
-          Left(GameStateSaved)
+          Right(GameStateSaved)
         case Failure(ex) =>
           println("error saving game state")
-          Right(GameStateRetrievalFailed("couldnt save game state"))
+          Left(GameStateRetrievalFailed("couldnt save game state"))
       }
     }
   )

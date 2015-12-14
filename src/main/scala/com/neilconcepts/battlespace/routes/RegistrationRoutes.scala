@@ -1,12 +1,14 @@
 package com.neilconcepts.battlespace.routes
 
 import java.util.UUID
+
 import com.neilconcepts.battlespace.domain.Board
 import com.neilconcepts.battlespace.domain.Messages.RegCreated
 import com.neilconcepts.battlespace.domain.bst.{ GameId, GameState, Player, PlayerId }
 import com.neilconcepts.battlespace.storage.Database
 import io.finch._
-
+import io.circe.generic.auto._
+import io.finch.circe._
 /**
  * RegistrationRoutes ::
  * These are all responsible for registering new accounts or reporting back that
@@ -22,14 +24,16 @@ import io.finch._
 trait RegistrationRoutes extends RegistrationRouteActions {
   implicit def str2uuid: (String) => PlayerId = (x: String) => UUID.fromString(x)
 
-  def getRegUser(db: Database): Endpoint[String] =
+  def getRegUser(db: Database): Endpoint[Player] =
     get("c" / string) { id: String =>
-      for (
-        regPlayer <- db.registration.readRegistration(id)
-      ) yield extractRegPlayer(regPlayer)
+      db.registration.readRegistration(id).map { player =>
+        Created(extractRegPlayer(player))
+      }
+    }.handle {
+      case e: Exception => NotFound(e)
     }
 
-  def createRegUser(db: Database): Router[Response] =
+  def createRegUser(db: Database): Endpoint[RegCreated] =
     get("c") {
       val newId: PlayerId = UUID.randomUUID()
       val newPlayer: Player = Player(newId)
@@ -45,10 +49,11 @@ trait RegistrationRoutes extends RegistrationRouteActions {
 }
 
 trait RegistrationRouteActions {
-  def extractRegPlayer: Option[Player] => Response = {
+  def extractRegPlayer: Option[Player] => Player = {
     case Some(registeredPlayer) =>
-      Created(Map("player" -> registeredPlayer.toString))
+      registeredPlayer
     case None =>
-      Created(Map("player" -> "registration not found"))
+      throw new Exception("player not found")
+
   }
 }

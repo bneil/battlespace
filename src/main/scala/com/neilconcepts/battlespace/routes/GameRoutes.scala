@@ -5,14 +5,11 @@ import java.util.UUID
 import com.neilconcepts.battlespace.domain.Board.Point
 import com.neilconcepts.battlespace.domain.Messages._
 import com.neilconcepts.battlespace.domain.bst.GameId
-import com.neilconcepts.battlespace.domain.{ Board, uuid }
+import com.neilconcepts.battlespace.domain.Board
 import com.neilconcepts.battlespace.storage.Database
-import com.twitter.finagle.httpx.Response
+import io.finch._
 import io.circe.generic.auto._
 import io.finch.circe._
-import io.finch.request._
-import io.finch.response._
-import io.finch.route.{ Router, _ }
 
 /**
  * GameRoutes ::
@@ -23,61 +20,47 @@ import io.finch.route.{ Router, _ }
  */
 trait GameRoutes extends GameRouteActions {
 
-  def attackBoard(db: Database): Router[Response] =
-    post("g" / uuid ? body.as[Point]) { (gameID: UUID, p: Point) =>
-      for (
-        gameStateMessage <- db.gameState.retrieveGameState(gameID)
-      ) yield {
-        handleAttackGameBoard(p, gameStateMessage)
+  def attackBoard(db: Database): Endpoint[String] =
+    post("g" / uuid ? body.as[Point]) { (gameId: UUID, p: Point) =>
+      db.gameState.retrieveGameState(gameId).map { gameStateMessage =>
+        Ok(handleAttackGameBoard(p, gm = gameStateMessage))
       }
     }
 
-  def boardStatus(db: Database): Router[Response] =
-    get("g" / uuid / "status") { gameID: GameId =>
-      for (
-        gameState <- db.gameState.retrieveGameState(gameID)
-      ) yield {
-        extractGameStateResponse(gameState)
-      }
-    }
+  //def boardStatus(db: Database): Endpoint[String] =
+  //  get("g" / uuid / "status") { gameId: GameId =>
+  //    db.gameState.retrieveGameState(gameId).map { gameState =>
+  //      Ok(extractGameStateResponse(gameState))
+  //    }
+  //  }
 
 }
 
 trait GameRouteActions {
-  def handleAttackGameBoard(p: Point, gm: Either[GameStateMessage, GameStateError]): Response = {
+  def handleAttackGameBoard(p: Point, gm: Either[GameStateError, GameStateMessage]): String = {
     gm match {
-      case Left(gameStateMessage) => handleAttackGameBoardRetrieved(p, gameStateMessage)
-      case Right(gameStateError)  => handleGameStateError(gameStateError)
+      case Right(gameStateMessage) => handleAttackGameBoardRetrieved(p, gameStateMessage)
+      case Left(gameStateError)    => handleGameStateError(gameStateError)
     }
   }
 
-  def extractGameStateResponse: Either[GameStateMessage, GameStateError] => Response = {
-    case Left(gameStateMessage) => handleGameStateRetrieved(gameStateMessage)
-    case Right(gameStateError)  => handleGameStateError(gameStateError)
+  def extractGameStateResponse: Either[GameStateError, GameStateMessage] => String = {
+    case Right(gameStateMessage) => gameStateMessage.toString
+    case Left(gameStateError)    => throw new Exception(gameStateError.toString)
   }
 
-  def handleAttackGameBoardRetrieved(p: Point, gs: GameStateMessage): Response = {
+  def handleAttackGameBoardRetrieved(p: Point, gs: GameStateMessage): String = {
     gs match {
       case GameStateRetrieved(gameState) =>
         val boardAfterAttack = Board.attackBoard(p, gameState.gameBoard)
-        Ok("done attacking")
+        "done attacking"
       case _ =>
-        Ok("no game state to retrieve")
+        "no game state to retrieve"
     }
   }
 
-  def handleGameStateRetrieved: GameStateMessage => Response = {
-    case GameStateRetrieved(gameState) =>
-      val board = gameState.gameBoard.gb.mkString(",")
-      Ok(board)
-    case GameStateSaved =>
-      Ok("game saved")
-  }
-
-  def handleGameStateError: GameStateError => Response = {
-    case GameStateRetrievalFailed(err) =>
-      Ok(err)
-    case GameStateSaveFailed(err) =>
-      Ok(err)
+  def handleGameStateError: GameStateError => ErrorMsg = {
+    case GameStateRetrievalFailed(err) => err
+    case GameStateSaveFailed(err)      => err
   }
 }

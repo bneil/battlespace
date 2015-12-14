@@ -9,7 +9,7 @@ import com.twitter.util.Future
  * A way to save and retrieve gamestate since http is stateless
  */
 trait GameStateStorage {
-  type GameStateResponse = Future[Either[GameStateMessage, GameStateError]]
+  type GameStateResponse = Future[Either[GameStateError, GameStateMessage]]
 
   def retrieveGameState(gameID: GameId): GameStateResponse
   def saveGameState(gameState: GS): GameStateResponse

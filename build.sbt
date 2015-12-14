@@ -56,6 +56,7 @@ libraryDependencies ++= Seq(
   // -- Finch --
   "com.github.finagle" %% "finch-core" % "0.9.2",
   "com.github.finagle" %% "finch-circe" % "0.9.2",
+  "com.twitter" %% "twitter-server" % "1.16.0",
   "io.circe" %% "circe-core" % "0.2.1",
   "io.circe" %% "circe-generic" % "0.2.1",
   "io.circe" %% "circe-jawn" % "0.2.1",

@@ -4,12 +4,16 @@ import java.util.UUID
 
 import com.neilconcepts.battlespace.domain.Board
 import com.neilconcepts.battlespace.domain.bst.{ GameId, GameState }
-import com.neilconcepts.battlespace.storage.{ Database, RegistrationStorage }
-import com.neilconcepts.battlespace.storage.mem.InMemRegistration
-import com.twitter.finagle.Httpx
-import com.twitter.util.{ Future, Await }
-import io.finch.route._
-import io.finch.request._
+import com.neilconcepts.battlespace.storage.Database
+import com.twitter.app.Flag
+import com.twitter.finagle.{ Http, Service }
+import com.twitter.finagle.param.Stats
+import com.twitter.finagle.stats.Counter
+import com.twitter.server.TwitterServer
+import com.twitter.util.Await
+import io.circe.generic.auto._
+import io.finch._
+import io.finch.circe._
 
 /**
  * BattleSpaceApp ::
@@ -17,27 +21,27 @@ import io.finch.request._
  * and I got that idea from the finch petstore app, to prepopulate
  * the registration db.
  */
-class BattleSpaceApp {
+object BattleSpaceApp extends TwitterServer {
+  val port: Flag[Int] = flag("port", 8081, "TCP port for HTTP server")
+  val boards: Counter = statsReceiver.counter("battlespace")
+
   val db: Database = new Database()
   SeedData.init(db)
 
   val service = Endpoint.makeService(db)
 
-  val server = Httpx.serve(":8080", service) //creates service
+  def main(): Unit = {
+    val server =
+      Http.server
+        .configured(Stats(statsReceiver))
+        .serve(s":${port()}", service)
 
-  println("server starting on 8080")
-  Await.ready(server)
+    onExit {
+      server.close()
+    }
 
-  def close(): Future[Unit] = {
-    Await.ready(server.close())
+    Await.ready(server)
   }
-}
-
-/**
- * Launches the BattleSpaceApp service when the system is ready.
- */
-object BattleSpaceApp extends BattleSpaceApp with App {
-  Await.ready(server)
 }
 
 object SeedData {

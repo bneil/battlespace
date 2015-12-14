@@ -23,12 +23,12 @@ object Board extends Ships {
   val directions = Seq(Horizontal, Vertical, Diag)
 
   val maxDimensions = 10
-  case class Point(x: X, y: Y, z: Z)
+  case class Point(x: Int, y: Int, z: Int)
   case class BattleSpace(p: Point, g: GameSpace)
   case class BattleSpaceBoard(gb: Seq[BattleSpace])
 
-  def getRandDirection: Direction =
-    Random.shuffle(directions).head
+  def getRandDirection: Option[Direction] =
+    Random.shuffle(directions).headOption
 
   def generateRandomEncounter() = ???
 
@@ -40,7 +40,7 @@ object Board extends Ships {
       }
     for (
       ship <- spaceShips;
-      num <- ship.size;
+      num <- 1 to ship.siz;
       direction <- getRandDirection
     ) yield {
       positionByDirection(direction)
