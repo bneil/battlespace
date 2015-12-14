@@ -20,6 +20,11 @@ import io.finch.circe._
  */
 trait GameRoutes extends GameRouteActions {
 
+  def ping(): Endpoint[String] =
+    get("g" / "ping") {
+      Ok("pong")
+    }
+
   def attackBoard(db: Database): Endpoint[String] =
     post("g" / uuid ? body.as[Point]) { (gameId: UUID, p: Point) =>
       db.gameState.retrieveGameState(gameId).map { gameStateMessage =>

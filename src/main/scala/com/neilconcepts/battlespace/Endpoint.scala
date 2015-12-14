@@ -20,6 +20,7 @@ object Endpoint
 
   def makeService(db: Database): Service[Request, Response] =
     (
+      ping() :+:
       getRegUser(db) :+:
       createRegUser(db) :+:
       attackBoard(db)

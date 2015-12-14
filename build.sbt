@@ -73,8 +73,6 @@ resolvers ++= Seq(
 
 )
 
-mainClass in Compile := Some("com.neilconcepts.battlespace.BattleSpaceApp")
-
 scalariformSettings
 
 ScalariformKeys.preferences := ScalariformKeys.preferences.value

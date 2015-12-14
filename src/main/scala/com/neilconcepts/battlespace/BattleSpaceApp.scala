@@ -30,6 +30,8 @@ object BattleSpaceApp extends TwitterServer {
 
   val service = Endpoint.makeService(db)
 
+  log.info(s"starting server on ${port()}")
+
   def main(): Unit = {
     val server =
       Http.server
@@ -42,6 +44,7 @@ object BattleSpaceApp extends TwitterServer {
 
     Await.ready(server)
   }
+
 }
 
 object SeedData {
